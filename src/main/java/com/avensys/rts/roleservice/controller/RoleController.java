@@ -28,6 +28,12 @@ public class RoleController {
     @Autowired
     private MessageSource messageSource;
     private static final Logger LOG = LoggerFactory.getLogger(RoleController.class);
+
+    /**
+     * This method is used to create a role.
+     * @param roleRequestDTO
+     * @return
+     */
     @PostMapping("/create")
 
     public ResponseEntity<?> createRole(@RequestBody RoleRequestDTO roleRequestDTO){
@@ -37,18 +43,39 @@ public class RoleController {
                 messageSource.getMessage(MessageConstants.MESSAGE_CREATED, null, LocaleContextHolder.getLocale()));
 
     }
+
+    /**
+     * This method is used to update role information
+     * @param roleRequestDTO
+     * @param id
+     * @return
+     */
     @PutMapping("/update/{id}")
     public ResponseEntity<?>updateRole(@RequestBody RoleRequestDTO roleRequestDTO,Integer id){
         LOG.info("updateRole request received");
         RoleEntity roleEntity = roleService.updateRole(roleRequestDTO,id);
         return ResponseUtil.generateSuccessResponse(roleEntity,HttpStatus.CREATED,messageSource.getMessage(MessageConstants.MESSAGE_UPDATED,null,LocaleContextHolder.getLocale()));
     }
+
+    /**
+     * This method is used to retrieve role information
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<?>getRole(@PathVariable Integer id){
         LOG.info("getRole request received");
         RoleEntity roleEntity = roleService.getRole(id);
         return ResponseUtil.generateSuccessResponse(roleEntity,HttpStatus.CREATED,messageSource.getMessage(MessageConstants.MESSAGE_UPDATED,null,LocaleContextHolder.getLocale()));
     }
+
+    /**
+     *  This method is used to retrieve all role list
+     * @param pageNo
+     * @param pageSize
+     * @param sortBy
+     * @return
+     */
     @GetMapping("/roleList")
     public ResponseEntity<Object>getRoleList(
             @RequestParam(defaultValue = "0") Integer pageNo,

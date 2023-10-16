@@ -14,4 +14,5 @@ public interface RoleRepository extends JpaRepository<RoleEntity,Integer>, JpaSp
     @Query(value = "SELECT a FROM RoleEntity a WHERE a.isDeleted = ?1")
     List<RoleEntity> findAllAndIsDeleted(boolean isDeleted, Pageable pageable);
 
+
 }
