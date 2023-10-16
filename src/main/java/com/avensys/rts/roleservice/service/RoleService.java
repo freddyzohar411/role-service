@@ -1,8 +1,11 @@
 package com.avensys.rts.roleservice.service;
 
+import com.avensys.rts.roleservice.entity.RoleEntity;
 import com.avensys.rts.roleservice.payloadrequest.RoleRequestDTO;
-import com.avensys.rts.roleservice.payloadresponse.RoleListResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface RoleService {
@@ -11,20 +14,20 @@ public interface RoleService {
      * @param roleRequestDTO
      * @return
      */
-    public RoleRequestDTO createRole(RoleRequestDTO roleRequestDTO);
+    public RoleEntity createRole(RoleRequestDTO roleRequestDTO);
 
     /**
      * This method is used to retrieve all role list
      * @return
      */
-    public List<RoleListResponse>getRoleList();
+    public List<RoleEntity>getRoleList(Integer pageNo, Integer pageSize, LocalDateTime sortBy);
 
     /**
      * This method is used to retrieve role information
      * @param id
      * @return
      */
-    public RoleRequestDTO getRole(Integer id);
+    public RoleEntity getRole(Integer id);
 
     /**
      * This method is used to update role information
@@ -32,11 +35,13 @@ public interface RoleService {
      * @param id
      * @return
      */
-    public RoleRequestDTO updateRole(RoleRequestDTO roleRequestDTO,Integer id);
+    public RoleEntity updateRole(RoleRequestDTO roleRequestDTO,Integer id);
 
     /**
      * This method is used to delete role information
      * @param id
      */
     public void deleteRole(Integer id);
+
+    public Page<RoleEntity> search(String search, Pageable pageable);
 }

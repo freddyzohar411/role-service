@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "role")
+@Entity
+@Table(name = "role")
 public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,11 +38,14 @@ public class RoleEntity {
     @Column(name = "updated_by")
     private Integer updatedBy;
 
-    @ManyToMany
-    @JoinTable(name = "role_permissions",joinColumns = @JoinColumn(name="role_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name="permissions_id",referencedColumnName = "id"))
-    private List<PermissionsEntity> permissionsEntityList;
+    @Column(name="is_deleted")
+    private boolean isDeleted;
 
-    @ManyToMany
-    @JoinTable(name="user_group_roles",joinColumns = @JoinColumn(name="role_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name ="user_group_id",referencedColumnName = "id"))
-    private List<UserGroupEntity> userGroupEntityList;
+   // @ManyToMany
+   // @JoinTable(name = "role_permissions",joinColumns = @JoinColumn(name="role_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name="permissions_id",referencedColumnName = "id"))
+   // private List<PermissionsEntity> permissionsEntityList;
+
+   // @ManyToMany
+   // @JoinTable(name="user_group_roles",joinColumns = @JoinColumn(name="role_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name ="user_group_id",referencedColumnName = "id"))
+   // private List<UserGroupEntity> userGroupEntityList;
 }

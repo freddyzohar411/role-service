@@ -7,11 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "role_permissions")
+@Entity
+@Table(name = "role_permissions")
 public class RolePermissionsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

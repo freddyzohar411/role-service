@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
@@ -13,7 +11,7 @@ import java.time.LocalDateTime;
 public class UserDTO {
     private String username;
     //private String password;
-    private LocalDateTime lastLoginDatetime;
-    private Integer contactId;
-    private Integer entityId;
+    //private LocalDateTime lastLoginDatetime;
+   // private Integer contactId;
+   // private Integer entityId;
 }

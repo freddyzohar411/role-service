@@ -8,11 +8,13 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "permission")
+@Entity
+@Table(name = "permission")
 public class PermissionsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

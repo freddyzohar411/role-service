@@ -1,30 +1,21 @@
 package com.avensys.rts.roleservice.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
-
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@Table(name = "user_group_roles")
-public class UserGroupRolesEntity {
+@Table(name= "User_group_intersection")
+public class UserGroupIntersection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="user_group_role_id")
-    private Integer userGroupRoleId;
+    @Column(name="id")
+    private Integer id;
 
-    @Column(name = "user_group_Id")
+    @Column(name="user_group_id")
     private Integer userGroupId;
 
-    @Column(name = "role_id")
-    private Integer roleId;
+    @Column(name="user_id")
+    private Integer userId;
 
     @Column(name="created_by")
     private Integer createdBy;
@@ -37,4 +28,5 @@ public class UserGroupRolesEntity {
 
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
+
 }
