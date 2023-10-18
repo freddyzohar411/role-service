@@ -9,8 +9,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PermissionDTO {
+    private Integer id;
     private String permissionName;
-    private String description;
+    //private String description;
     //private Integer createdBy;
    // private Integer updatedBy;
    // private LocalDateTime createdAt;

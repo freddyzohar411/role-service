@@ -30,7 +30,7 @@ public class RoleController {
     private static final Logger LOG = LoggerFactory.getLogger(RoleController.class);
 
     /**
-     * This method is used to create a role.
+     *  This method is used to create a role.
      * @param roleRequestDTO
      * @return
      */
@@ -45,15 +45,15 @@ public class RoleController {
     }
 
     /**
-     * This method is used to update role information
+     *  This method is used to update role information
      * @param roleRequestDTO
-     * @param id
+     * @param roleId
      * @return
      */
     @PutMapping("/update/{id}")
-    public ResponseEntity<?>updateRole(@RequestBody RoleRequestDTO roleRequestDTO,Integer id){
+    public ResponseEntity<?>updateRole(@RequestBody RoleRequestDTO roleRequestDTO,Integer roleId){
         LOG.info("updateRole request received");
-        RoleEntity roleEntity = roleService.updateRole(roleRequestDTO,id);
+        RoleEntity roleEntity = roleService.updateRole(roleRequestDTO,roleId);
         return ResponseUtil.generateSuccessResponse(roleEntity,HttpStatus.CREATED,messageSource.getMessage(MessageConstants.MESSAGE_UPDATED,null,LocaleContextHolder.getLocale()));
     }
 
@@ -70,7 +70,7 @@ public class RoleController {
     }
 
     /**
-     *  This method is used to retrieve all role list
+     * This method is used to retrieve all role list
      * @param pageNo
      * @param pageSize
      * @param sortBy
@@ -86,6 +86,12 @@ public class RoleController {
         List<RoleEntity> roleEntityList=roleService.getRoleList(pageNo, pageSize, sortBy);
         return ResponseUtil.generateSuccessResponse(roleEntityList,HttpStatus.CREATED,messageSource.getMessage(MessageConstants.MESSAGE_UPDATED,null,LocaleContextHolder.getLocale()));
     }
+
+    /**
+     * This method is used to delete role information
+     * @param id
+     * @return
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deleteRole(@PathVariable Integer id){
         LOG.info("deleteRole request received");

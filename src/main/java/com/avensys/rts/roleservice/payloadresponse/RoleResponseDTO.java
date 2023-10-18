@@ -1,7 +1,6 @@
 package com.avensys.rts.roleservice.payloadresponse;
 
 import com.avensys.rts.roleservice.payload.PermissionDTO;
-import com.avensys.rts.roleservice.payload.UserDTO;
 import com.avensys.rts.roleservice.payload.UserGroupDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +13,7 @@ import java.util.List;
 public class RoleResponseDTO {
     private String roleName;
     private String roleDescription;
-    List<UserDTO> userDTOList;
+    //List<UserDTO> userDTOList;
     List<UserGroupDTO> userGroupDTOList;
     List<PermissionDTO>permissionDTOList;
 }

@@ -32,10 +32,10 @@ public interface RoleService {
     /**
      * This method is used to update role information
      * @param roleRequestDTO
-     * @param id
+     * @param roleId
      * @return
      */
-    public RoleEntity updateRole(RoleRequestDTO roleRequestDTO,Integer id);
+    public RoleEntity updateRole(RoleRequestDTO roleRequestDTO,Integer roleId);
 
     /**
      * This method is used to delete role information

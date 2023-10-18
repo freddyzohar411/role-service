@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 public class UserGroupRolesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="user_group_role_id")
-    private Integer userGroupRoleId;
+    @Column(name ="id")
+    private Integer id;
 
     @Column(name = "user_group_Id")
     private Integer userGroupId;

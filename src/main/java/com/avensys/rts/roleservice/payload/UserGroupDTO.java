@@ -9,6 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserGroupDTO {
+    private Integer id;
     private String userGroupName;
    // private String description;
    // private Integer createdBy;

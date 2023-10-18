@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -39,8 +38,8 @@ public class PermissionsEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToMany(mappedBy ="permissionsEntityList")
-    private List<RoleEntity>roleEntityList;
+   // @ManyToMany(mappedBy ="permissionsEntityList")
+   // private List<RoleEntity>roleEntityList;
 }
 
 

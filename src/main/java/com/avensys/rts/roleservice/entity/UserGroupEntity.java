@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -39,6 +38,9 @@ public class UserGroupEntity {
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToMany(mappedBy = "userGroupEntityList")
-    private List<RoleEntity> roleEntityList;
+    @Column(name="is_deleted")
+    private boolean isDeleted;
+
+    //@ManyToMany(mappedBy = "userGroupEntityList")
+   // private List<RoleEntity> roleEntityList;
 }

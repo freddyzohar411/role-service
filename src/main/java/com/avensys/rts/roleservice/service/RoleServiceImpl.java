@@ -1,14 +1,18 @@
 package com.avensys.rts.roleservice.service;
 
 import com.avensys.rts.roleservice.entity.RoleEntity;
+import com.avensys.rts.roleservice.entity.RolePermissionsEntity;
+import com.avensys.rts.roleservice.entity.UserGroupRolesEntity;
 import com.avensys.rts.roleservice.payload.PermissionDTO;
-import com.avensys.rts.roleservice.payload.UserDTO;
 import com.avensys.rts.roleservice.payload.UserGroupDTO;
 import com.avensys.rts.roleservice.payloadrequest.RoleRequestDTO;
 import com.avensys.rts.roleservice.repository.PermissionRepository;
+import com.avensys.rts.roleservice.repository.RolePermissionsRepository;
 import com.avensys.rts.roleservice.repository.RoleRepository;
+import com.avensys.rts.roleservice.repository.UserGroupRolesRepository;
 import com.avensys.rts.roleservice.search.role.RoleSpecificationBuilder;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +34,39 @@ public class RoleServiceImpl implements RoleService  {
     private RoleRepository roleRepository;
     @Autowired
     private PermissionRepository permissionRepository;
+    @Autowired
+    private RolePermissionsRepository rolePermissionsRepository;
+    @Autowired
+    private UserGroupRolesRepository userGroupRolesRepository;
     @Override
+    @Transactional
     public RoleEntity createRole(RoleRequestDTO roleRequestDTO){
         LOG.info("createRole started");
+        RoleEntity roleEntity = mapRoleRequestDTOToRoleEntity(roleRequestDTO);
+        RoleEntity save = roleRepository.save(roleEntity);
+        Integer roleId = save.getId();
         List<UserGroupDTO> userGroupDTOList = roleRequestDTO.getUserGroupDTOList();
-        List<UserDTO>userDTOList = roleRequestDTO.getUserDTOList();
+        int totalUserGroups=userGroupDTOList.size();
+        for (int i=0;i<totalUserGroups;i++){
+            UserGroupRolesEntity userGroupRolesEntity = new UserGroupRolesEntity();
+            UserGroupDTO userGroupDTO = userGroupDTOList.get(i);
+            userGroupRolesEntity.setUserGroupId(userGroupDTO.getId());
+            userGroupRolesEntity.setRoleId(save.getId());
+            userGroupRolesRepository.save(userGroupRolesEntity);
+        }
+       // List<UserDTO>userDTOList = roleRequestDTO.getUserDTOList();
         List<PermissionDTO> permissionDTOList = roleRequestDTO.getPermissionDTOList();
-        RoleEntity saveRole = mapRoleRequestDTOToRoleEntity(roleRequestDTO);
+        int totalPermissions = permissionDTOList.size();
+        for(int i =0;i<totalPermissions;i++){
+            RolePermissionsEntity rolePermissionsEntity = new RolePermissionsEntity();
+            PermissionDTO permissionDTO=permissionDTOList.get(i);
+            rolePermissionsEntity.setPermissionId(permissionDTO.getId());
+            rolePermissionsEntity.setRoleId(save.getId());
+            rolePermissionsRepository.save(rolePermissionsEntity);
+        }
 
-      return saveRole;
+
+      return save;
     }
 
     @Override
@@ -58,13 +86,34 @@ public class RoleServiceImpl implements RoleService  {
     }
 
     @Override
-    public RoleEntity updateRole(RoleRequestDTO roleRequestDTO, Integer id) {
+    public RoleEntity updateRole(RoleRequestDTO roleRequestDTO, Integer roleId) {
         LOG.info("updateRole request processing");
-        RoleEntity roleEntity = roleRepository.findByIdAndIsDeleted(id,false).orElseThrow(
-                () -> new EntityNotFoundException("Role with %s not found".formatted(id)));
+        RoleEntity roleEntity = roleRepository.findByIdAndIsDeleted(roleId,false).orElseThrow(
+                () -> new EntityNotFoundException("Role with %s not found".formatted(roleId)));
         roleEntity = mapRequestToEntity(roleRequestDTO);
+        RoleEntity save =roleRepository.save(roleEntity);
+        roleRequestDTO.getUserGroupDTOList().clear();
+        List<UserGroupDTO> userGroupDTOList = roleRequestDTO.getUserGroupDTOList();
+        int totalUserGroups=userGroupDTOList.size();
+        for (int i=0;i<totalUserGroups;i++){
+            UserGroupRolesEntity userGroupRolesEntity = new UserGroupRolesEntity();
+            UserGroupDTO userGroupDTO = userGroupDTOList.get(i);
+            userGroupRolesEntity.setUserGroupId(userGroupDTO.getId());
+            userGroupRolesEntity.setRoleId(save.getId());
+            userGroupRolesRepository.save(userGroupRolesEntity);
+        }
+        roleRequestDTO.getPermissionDTOList().clear();
+        List<PermissionDTO> permissionDTOList = roleRequestDTO.getPermissionDTOList();
+        int totalPermissions = permissionDTOList.size();
+        for(int i =0;i<totalPermissions;i++){
+            RolePermissionsEntity rolePermissionsEntity = new RolePermissionsEntity();
+            PermissionDTO permissionDTO=permissionDTOList.get(i);
+            rolePermissionsEntity.setPermissionId(permissionDTO.getId());
+            rolePermissionsEntity.setRoleId(save.getId());
+            rolePermissionsRepository.save(rolePermissionsEntity);
+        }
 
-        return roleRepository.save(roleEntity);
+        return save;
     }
 
     @Override
@@ -100,7 +149,8 @@ public class RoleServiceImpl implements RoleService  {
             builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
         }
 
-        return roleRepository.findAll(builder.build(), pageable);
+       return roleRepository.findAll(builder.build(), pageable);
+
     }
 
 

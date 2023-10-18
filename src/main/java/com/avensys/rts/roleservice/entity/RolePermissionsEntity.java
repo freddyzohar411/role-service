@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 public class RolePermissionsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_permission_id")
-    private Integer rolePermissionId;
+    @Column(name = "id")
+    private Integer id;
 
     @Column(name = "role_id")
     private Integer roleId;
