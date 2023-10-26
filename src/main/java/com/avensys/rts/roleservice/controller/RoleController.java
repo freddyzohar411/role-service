@@ -1,6 +1,5 @@
 package com.avensys.rts.roleservice.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.slf4j.Logger;
