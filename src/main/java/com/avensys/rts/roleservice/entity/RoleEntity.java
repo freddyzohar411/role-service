@@ -2,6 +2,9 @@ package com.avensys.rts.roleservice.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,6 +46,7 @@ public class RoleEntity extends BaseEntity {
 	private Set<PermissionEntity> permissions;
 
 	@ManyToMany(mappedBy = "roleEntities")
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private Set<UserGroupEntity> groupEntities;
 
 }

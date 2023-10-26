@@ -1,8 +1,9 @@
 package com.avensys.rts.roleservice.service;
 
-import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,18 +61,20 @@ public class RoleService {
 
 		RoleEntity roleEntity = mapRequestToEntity(roleRequestDTO);
 		List<Long> permissionDTOList = roleRequestDTO.getPermissionDTOList();
+		Set<PermissionEntity> permissions = new HashSet<PermissionEntity>();
 		permissionDTOList.forEach(id -> {
 			Optional<PermissionEntity> permissionEntity = permissionRepository.findById(id);
 			if (permissionEntity.isPresent()) {
-				roleEntity.getPermissions().add(permissionEntity.get());
+				permissions.add(permissionEntity.get());
 			}
 		});
+		roleEntity.setPermissions(permissions);
 		roleRepository.save(roleEntity);
 	}
 
 	public void updateRole(RoleRequestDTO roleRequestDTO) throws ServiceException {
 		RoleEntity roleEntity = getRoleById(roleRequestDTO.getId());
-		
+
 //		RoleEntity roleEntity = mapRequestToEntity(roleRequestDTO);
 //		List<Long> permissionDTOList = roleRequestDTO.getPermissionDTOList();
 //		permissionDTOList.forEach(id -> {
@@ -103,9 +106,9 @@ public class RoleService {
 		}
 	}
 
-	public List<RoleEntity> getRoleList(Integer pageNo, Integer pageSize, LocalDateTime sortBy) {
+	public List<RoleEntity> getRoleList(Integer pageNo, Integer pageSize, String sortBy) {
 		LOG.info("getRoleList request processing");
-		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by("sortBy"));
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
 		List<RoleEntity> roleEntityList = roleRepository.findAllAndIsDeleted(false, paging);
 		return roleEntityList;
 	}

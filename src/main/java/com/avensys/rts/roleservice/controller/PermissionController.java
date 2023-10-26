@@ -24,7 +24,7 @@ import com.avensys.rts.roleservice.service.PermissionService;
 import com.avensys.rts.roleservice.util.ResponseUtil;
 
 @RestController
-@RequestMapping("/permission")
+@RequestMapping("/api/permission")
 public class PermissionController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(PermissionController.class);
