@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories
-public class RoleServiceApplication{
-    public static void main(String[] args) {
-        SpringApplication.run(RoleServiceApplication.class,args);
+public class RoleServiceApplication {
 
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(RoleServiceApplication.class, args);
+	}
 }

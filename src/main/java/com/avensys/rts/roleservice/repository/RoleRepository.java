@@ -1,20 +1,24 @@
 package com.avensys.rts.roleservice.repository;
 
-import com.avensys.rts.roleservice.entity.RoleEntity;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface RoleRepository extends JpaRepository<RoleEntity,Integer>, JpaSpecificationExecutor<RoleEntity> {
-    Optional<RoleEntity> findByIdAndIsDeleted(Integer id, boolean isDeleted);
-    @Query(value = "SELECT a FROM RoleEntity a WHERE a.isDeleted = ?1")
-    List<RoleEntity> findAllAndIsDeleted(boolean isDeleted, Pageable pageable);
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
+import com.avensys.rts.roleservice.entity.RoleEntity;
+
+@Repository
+public interface RoleRepository extends CrudRepository<RoleEntity, Long>, JpaSpecificationExecutor<RoleEntity> {
+
+	Boolean existsByRoleName(String roleName);
+
+	Optional<RoleEntity> findByIdAndIsDeleted(Long id, boolean isDeleted);
+
+	@Query(value = "SELECT role FROM RoleEntity role WHERE role.isDeleted = ?1")
+	List<RoleEntity> findAllAndIsDeleted(boolean isDeleted, Pageable pageable);
 
 }

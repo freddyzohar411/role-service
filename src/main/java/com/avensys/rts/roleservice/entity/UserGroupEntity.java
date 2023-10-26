@@ -1,46 +1,45 @@
 package com.avensys.rts.roleservice.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
-@Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
 @Entity
-@Table(name = "user_group")
-public class UserGroupEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private Integer id;
+@Table(name = "user_group", uniqueConstraints = { @UniqueConstraint(columnNames = { "user_group_name" }) })
+public class UserGroupEntity extends BaseEntity {
 
-    @Column(name="user_group_name",length = 50)
-    private String userGroupName;
+	private static final long serialVersionUID = -19569507092908100L;
 
-    @Column(name="description",length = 255)
-    private String description;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 
-    @Column(name="created_by")
-    private Integer createdBy;
+	@NotNull(message = "User group name cannot be empty")
+	@Column(name = "user_group_name")
+	private String userGroupName;
 
-    @Column(name="updated_by")
-    private Integer updatedBy;
+	@NotNull(message = "User group description cannot be empty")
+	@Column(name = "user_group_description")
+	private String userGroupDescription;
 
-    @Column(name="created_at")
-    private LocalDateTime createdAt;
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "user_group_roles", joinColumns = @JoinColumn(name = "user_group_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	private Set<RoleEntity> roleEntities;
 
-    @Column(name="updated_at")
-    private LocalDateTime updatedAt;
-
-    @Column(name="is_deleted")
-    private boolean isDeleted;
-
-    //@ManyToMany(mappedBy = "userGroupEntityList")
-   // private List<RoleEntity> roleEntityList;
 }
