@@ -1,51 +1,48 @@
 package com.avensys.rts.roleservice.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
-@Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
 @Entity
-@Table(name = "role")
-public class RoleEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+@Table(name = "roles", uniqueConstraints = { @UniqueConstraint(columnNames = { "role_name" }) })
+public class RoleEntity extends BaseEntity {
 
-    @Column(name = "role_description",length =50 )
-    private String roleDescription;
+	private static final long serialVersionUID = 2991860491601656766L;
 
-    @Column(name = "role_name",length = 50)
-    private String roleName;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+	@NotNull(message = "Role name cannot be empty")
+	@Column(name = "role_name")
+	private String roleName;
 
-    @Column(name = "created_by")
-    private Integer createdBy;
+	@NotNull(message = "Role description cannot be empty")
+	@Column(name = "role_description")
+	private String roleDescription;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "role_permissions", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id"))
+	private Set<PermissionEntity> permissions;
 
-    @Column(name = "updated_by")
-    private Integer updatedBy;
+	@ManyToMany(mappedBy = "roleEntities")
+	private Set<UserGroupEntity> groupEntities;
 
-    @Column(name="is_deleted")
-    private boolean isDeleted;
-
-   // @ManyToMany
-   // @JoinTable(name = "role_permissions",joinColumns = @JoinColumn(name="role_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name="permissions_id",referencedColumnName = "id"))
-   // private List<PermissionsEntity> permissionsEntityList;
-
-   // @ManyToMany
-   // @JoinTable(name="user_group_roles",joinColumns = @JoinColumn(name="role_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name ="user_group_id",referencedColumnName = "id"))
-   // private List<UserGroupEntity> userGroupEntityList;
 }

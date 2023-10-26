@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 /***
  * 
  * @author kotaiah nalleboina
@@ -32,7 +31,8 @@ public class RoleSpecificationBuilder {
 			return null;
 		}
 
-		List<Specification<RoleEntity>> specs = params.stream().map(SearchSpecifications::new).collect(Collectors.toList());
+		List<Specification<RoleEntity>> specs = params.stream().map(SearchSpecifications::new)
+				.collect(Collectors.toList());
 
 		Specification<RoleEntity> result = specs.get(0);
 
