@@ -1,8 +1,14 @@
 package com.avensys.rts.roleservice.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.avensys.rts.roleservice.entity.RoleEntity;
+import com.avensys.rts.roleservice.payload.response.ModuleResponseDTO;
+import com.avensys.rts.roleservice.payload.response.RoleResponseDTO;
 import com.avensys.rts.roleservice.response.HttpResponse;
 
 public class ResponseUtil {
@@ -21,6 +27,44 @@ public class ResponseUtil {
 		httpResponse.setError(true);
 		httpResponse.setMessage(message);
 		return new ResponseEntity<>(httpResponse, httpStatus);
+	}
+
+	public static RoleResponseDTO mapRoleEntitytoResponse(RoleEntity role) {
+		RoleResponseDTO dto = new RoleResponseDTO();
+		dto.setId(role.getId());
+		dto.setRoleName(role.getRoleName());
+		dto.setRoleDescription(role.getRoleDescription());
+
+		List<ModuleResponseDTO> moduleList = new ArrayList<ModuleResponseDTO>();
+
+		if (role.getModules() != null && role.getModules().size() > 0) {
+			role.getModules().forEach(module -> {
+				ModuleResponseDTO moduleResponseDTO = new ModuleResponseDTO();
+				moduleResponseDTO.setId(module.getId());
+				moduleResponseDTO.setModuleName(module.getModuleName());
+				List<String> permissions = new ArrayList<String>();
+				if (module.getPermissions() != null && module.getPermissions().size() > 0) {
+					module.getPermissions().forEach(permission -> {
+						permissions.add(permission.getPermissionName());
+					});
+				}
+				moduleResponseDTO.setPermissions(permissions);
+				moduleList.add(moduleResponseDTO);
+			});
+		}
+
+		dto.setModules(moduleList);
+		return dto;
+	}
+
+	public static List<RoleResponseDTO> mapRoleEntityListtoResponse(List<RoleEntity> roles) {
+		List<RoleResponseDTO> response = new ArrayList<RoleResponseDTO>();
+		if (roles != null && roles.size() > 0) {
+			roles.forEach(role -> {
+				response.add(mapRoleEntitytoResponse(role));
+			});
+		}
+		return response;
 	}
 
 }

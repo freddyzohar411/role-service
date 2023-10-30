@@ -1,4 +1,4 @@
-package com.avensys.rts.roleservice.payloadrequest;
+package com.avensys.rts.roleservice.payload.request;
 
 import java.util.List;
 
@@ -11,10 +11,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleRequestDTO {
+public class ModuleRequestDTO {
 
 	private Long id;
-	private String roleName;
-	private String roleDescription;
-	private List<Long> permissionDTOList;
+	private List<Long> permissions;
 }

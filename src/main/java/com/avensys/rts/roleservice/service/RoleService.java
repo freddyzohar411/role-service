@@ -18,10 +18,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.avensys.rts.roleservice.entity.ModuleEntity;
 import com.avensys.rts.roleservice.entity.PermissionEntity;
 import com.avensys.rts.roleservice.entity.RoleEntity;
 import com.avensys.rts.roleservice.exception.ServiceException;
-import com.avensys.rts.roleservice.payloadrequest.RoleRequestDTO;
+import com.avensys.rts.roleservice.payload.request.ModuleRequestDTO;
+import com.avensys.rts.roleservice.payload.request.RoleRequestDTO;
+import com.avensys.rts.roleservice.repository.ModuleRepository;
 import com.avensys.rts.roleservice.repository.PermissionRepository;
 import com.avensys.rts.roleservice.repository.RoleRepository;
 import com.avensys.rts.roleservice.search.role.RoleSpecificationBuilder;
@@ -36,6 +39,9 @@ public class RoleService {
 
 	@Autowired
 	private RoleRepository roleRepository;
+
+	@Autowired
+	private ModuleRepository moduleRepository;
 
 	@Autowired
 	private PermissionRepository permissionRepository;
@@ -60,15 +66,25 @@ public class RoleService {
 		}
 
 		RoleEntity roleEntity = mapRequestToEntity(roleRequestDTO);
-		List<Long> permissionDTOList = roleRequestDTO.getPermissionDTOList();
-		Set<PermissionEntity> permissions = new HashSet<PermissionEntity>();
-		permissionDTOList.forEach(id -> {
-			Optional<PermissionEntity> permissionEntity = permissionRepository.findById(id);
-			if (permissionEntity.isPresent()) {
-				permissions.add(permissionEntity.get());
+		Set<ModuleEntity> modules = new HashSet<ModuleEntity>();
+
+		List<ModuleRequestDTO> moduleRequestDTOs = roleRequestDTO.getModules();
+		moduleRequestDTOs.forEach(module -> {
+			Optional<ModuleEntity> moduleEntity = moduleRepository.findById(module.getId());
+			if (moduleEntity.isPresent() && module.getPermissions() != null && module.getPermissions().size() > 0) {
+				ModuleEntity moduleEntityOb = moduleEntity.get();
+				Set<PermissionEntity> permissions = new HashSet<PermissionEntity>();
+				module.getPermissions().forEach(permissionId -> {
+					Optional<PermissionEntity> permissionEntity = permissionRepository.findById(permissionId);
+					if (permissionEntity.isPresent()) {
+						permissions.add(permissionEntity.get());
+					}
+				});
+				moduleEntityOb.setPermissions(permissions);
+				modules.add(moduleEntityOb);
 			}
 		});
-		//roleEntity.setPermissions(permissions);
+		roleEntity.setModules(modules);
 		roleRepository.save(roleEntity);
 	}
 

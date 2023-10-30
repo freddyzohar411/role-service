@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.avensys.rts.roleservice.constants.MessageConstants;
 import com.avensys.rts.roleservice.entity.RoleEntity;
 import com.avensys.rts.roleservice.exception.ServiceException;
-import com.avensys.rts.roleservice.payloadrequest.RoleRequestDTO;
+import com.avensys.rts.roleservice.payload.request.RoleRequestDTO;
 import com.avensys.rts.roleservice.service.RoleService;
 import com.avensys.rts.roleservice.util.ResponseUtil;
 
@@ -105,7 +105,8 @@ public class RoleController {
 	public ResponseEntity<?> find(@PathVariable("id") Long id) {
 		try {
 			RoleEntity role = roleService.getRoleById(id);
-			return ResponseUtil.generateSuccessResponse(role, HttpStatus.OK, null);
+			return ResponseUtil.generateSuccessResponse(ResponseUtil.mapRoleEntitytoResponse(role), HttpStatus.OK,
+					null);
 		} catch (ServiceException e) {
 			return ResponseUtil.generateSuccessResponse(null, HttpStatus.NOT_FOUND, e.getMessage());
 		}
@@ -125,7 +126,8 @@ public class RoleController {
 			@RequestParam(defaultValue = "roleName") String sortBy) {
 		LOG.info("get role list request received");
 		List<RoleEntity> roleEntityList = roleService.getRoleList(pageNo, pageSize, sortBy);
-		return ResponseUtil.generateSuccessResponse(roleEntityList, HttpStatus.OK,
+		return ResponseUtil.generateSuccessResponse(ResponseUtil.mapRoleEntityListtoResponse(roleEntityList),
+				HttpStatus.OK,
 				messageSource.getMessage(MessageConstants.MESSAGE_FETCHED, null, LocaleContextHolder.getLocale()));
 	}
 
