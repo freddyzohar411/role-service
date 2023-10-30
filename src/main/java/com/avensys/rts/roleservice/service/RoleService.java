@@ -68,7 +68,7 @@ public class RoleService {
 				permissions.add(permissionEntity.get());
 			}
 		});
-		roleEntity.setPermissions(permissions);
+		//roleEntity.setPermissions(permissions);
 		roleRepository.save(roleEntity);
 	}
 
