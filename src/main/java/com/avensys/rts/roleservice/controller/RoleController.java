@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ import com.avensys.rts.roleservice.payload.request.RoleRequestDTO;
 import com.avensys.rts.roleservice.service.RoleService;
 import com.avensys.rts.roleservice.util.ResponseUtil;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/role")
 public class RoleController {

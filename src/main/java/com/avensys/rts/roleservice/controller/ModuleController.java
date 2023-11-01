@@ -9,6 +9,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import com.avensys.rts.roleservice.exception.ServiceException;
 import com.avensys.rts.roleservice.service.ModuleService;
 import com.avensys.rts.roleservice.util.ResponseUtil;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/module")
 public class ModuleController {
