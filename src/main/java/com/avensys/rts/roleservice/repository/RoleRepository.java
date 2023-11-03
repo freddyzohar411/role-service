@@ -16,6 +16,8 @@ public interface RoleRepository extends CrudRepository<RoleEntity, Long>, JpaSpe
 
 	Boolean existsByRoleName(String roleName);
 
+	Optional<RoleEntity> findByRoleName(String roleName);
+
 	Optional<RoleEntity> findByIdAndIsDeleted(Long id, boolean isDeleted);
 
 	@Query(value = "SELECT role FROM RoleEntity role WHERE role.isDeleted = ?1")

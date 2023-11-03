@@ -74,6 +74,7 @@ public class RoleService {
 			if (moduleEntity.isPresent() && module.getPermissions() != null && module.getPermissions().size() > 0) {
 				ModuleEntity moduleEntityOb = moduleEntity.get();
 				Set<PermissionEntity> permissions = new HashSet<PermissionEntity>();
+				System.out.println("module.getPermissions() " + module.getPermissions().size());
 				module.getPermissions().forEach(permissionId -> {
 					Optional<PermissionEntity> permissionEntity = permissionRepository.findById(permissionId);
 					if (permissionEntity.isPresent()) {
