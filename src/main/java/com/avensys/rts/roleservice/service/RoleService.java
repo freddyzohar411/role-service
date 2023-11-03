@@ -86,7 +86,7 @@ public class RoleService {
 			}
 		});
 		roleEntity.setModules(modules);
-		// roleRepository.save(roleEntity);
+		roleRepository.save(roleEntity);
 	}
 
 	public void updateRole(RoleRequestDTO roleRequestDTO) throws ServiceException {
