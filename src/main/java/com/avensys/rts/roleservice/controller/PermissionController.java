@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,8 +45,10 @@ public class PermissionController {
 	 * @return
 	 */
 	@PostMapping
-	public ResponseEntity<?> create(@RequestBody PermissionEntity permissionEntity) {
+	public ResponseEntity<?> create(@RequestBody PermissionEntity permissionEntity,
+			@RequestHeader(name = "Authorization") String token) {
 		LOG.info("create permission request received");
+		System.out.println("test token " + token);
 		try {
 			permissionService.save(permissionEntity);
 			return ResponseUtil.generateSuccessResponse(null, HttpStatus.CREATED,
