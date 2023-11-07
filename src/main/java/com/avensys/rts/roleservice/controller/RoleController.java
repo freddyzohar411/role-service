@@ -2,6 +2,7 @@ package com.avensys.rts.roleservice.controller;
 
 import java.util.List;
 
+import com.avensys.rts.roleservice.payload.request.RoleListingRequestDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,6 +141,27 @@ public class RoleController {
 		Page<RoleEntity> page = roleService.search(search, pageable);
 		return ResponseUtil.generateSuccessResponse(page, HttpStatus.OK,
 				messageSource.getMessage(MessageConstants.MESSAGE_DELETED, null, LocaleContextHolder.getLocale()));
+	}
+
+	@PostMapping("listing")
+	public ResponseEntity<Object> getRolesListing(@RequestBody RoleListingRequestDTO roleListingRequestDTO) {
+		Integer page = roleListingRequestDTO.getPage();
+		Integer pageSize = roleListingRequestDTO.getPageSize();
+		String sortBy = roleListingRequestDTO.getSortBy();
+		String sortDirection = roleListingRequestDTO.getSortDirection();
+		String searchTerm = roleListingRequestDTO.getSearchTerm();
+		if (searchTerm == null || searchTerm.isEmpty()) {
+			return ResponseUtil.generateSuccessResponse(
+					ResponseUtil.mapRoleEntityPageToRoleListingResponse(
+							roleService.getUserGroupListingPage(page, pageSize, sortBy, sortDirection)),
+					HttpStatus.OK,
+					messageSource.getMessage(MessageConstants.MESSAGE_SUCCESS, null, LocaleContextHolder.getLocale()));
+		}
+		return ResponseUtil.generateSuccessResponse(
+				ResponseUtil.mapRoleEntityPageToRoleListingResponse(roleService.getUserGroupListingPageWithSearch(page,
+						pageSize, sortBy, sortDirection, searchTerm)),
+				HttpStatus.OK,
+				messageSource.getMessage(MessageConstants.MESSAGE_SUCCESS, null, LocaleContextHolder.getLocale()));
 	}
 
 }
