@@ -187,11 +187,11 @@ public class RoleService {
 		}
 		// Dynamic search based on custom view (future feature)
 		List<String> customView = List.of("roleName", "roleDescription");
-		Page<RoleEntity> rolesPage = roleRepository.findAll(getSpecification(searchTerm, customView), pageable);
+		Page<RoleEntity> rolesPage = roleRepository.findAll(getSpecification(searchTerm, customView,  false, true ), pageable);
 		return rolesPage;
 	}
 
-	private Specification<RoleEntity> getSpecification(String searchTerm, List<String> customView) {
+	private Specification<RoleEntity> getSpecification(String searchTerm, List<String> customView, Boolean isDeleted, Boolean isActive ) {
 		return (root, query, criteriaBuilder) -> {
 			List<Predicate> predicates = new ArrayList<>();
 			// Custom fields you want to search in
@@ -209,7 +209,12 @@ public class RoleService {
 							"%" + searchTerm.toLowerCase() + "%"));
 				}
 			}
-			Predicate searchOrPredicates = criteriaBuilder.or(predicates.toArray(new Predicate[0]));
+
+			// Add other fields you want to search in
+			predicates.add(criteriaBuilder.equal(root.get("isDeleted"), isDeleted)); // Assuming isDeleted is a boolean				// field
+			predicates.add(criteriaBuilder.equal(root.get("isActive"), isActive)); // Assuming isActive i
+
+			Predicate searchOrPredicates = criteriaBuilder.and(predicates.toArray(new Predicate[0]));
 			return criteriaBuilder.and(searchOrPredicates);
 		};
 	}

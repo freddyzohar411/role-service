@@ -31,7 +31,6 @@ public class PermissionService {
 			throw new ServiceException(
 					messageSource.getMessage("error.permissionnametaken", null, LocaleContextHolder.getLocale()));
 		}
-
 		permissionRepository.save(permissionEntity);
 	}
 
