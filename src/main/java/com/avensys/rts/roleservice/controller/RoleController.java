@@ -2,7 +2,6 @@ package com.avensys.rts.roleservice.controller;
 
 import java.util.List;
 
-import com.avensys.rts.roleservice.payload.request.RoleListingRequestDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,8 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.avensys.rts.roleservice.constants.MessageConstants;
 import com.avensys.rts.roleservice.entity.RoleEntity;
 import com.avensys.rts.roleservice.exception.ServiceException;
+import com.avensys.rts.roleservice.payload.request.RoleListingRequestDTO;
 import com.avensys.rts.roleservice.payload.request.RoleRequestDTO;
 import com.avensys.rts.roleservice.service.RoleService;
+import com.avensys.rts.roleservice.util.JwtUtil;
 import com.avensys.rts.roleservice.util.ResponseUtil;
 
 @CrossOrigin
@@ -51,9 +51,8 @@ public class RoleController {
 	 * @return
 	 */
 	@PostMapping
-	public ResponseEntity<?> createRole(@RequestBody RoleRequestDTO roleRequestDTO,
-			@RequestHeader(name = "Authorization") String token) {
-		LOG.info("create role request received");
+	public ResponseEntity<?> createRole(@RequestBody RoleRequestDTO roleRequestDTO) {
+		LOG.info("create role request received " + JwtUtil.getTokenFromContext());
 		try {
 			roleService.createRole(roleRequestDTO);
 			return ResponseUtil.generateSuccessResponse(null, HttpStatus.CREATED,

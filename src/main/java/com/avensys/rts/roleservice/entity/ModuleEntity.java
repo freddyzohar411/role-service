@@ -2,9 +2,6 @@ package com.avensys.rts.roleservice.entity;
 
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,8 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -43,11 +39,8 @@ public class ModuleEntity extends BaseEntity {
 	@Column(name = "module_description")
 	private String moduleDescription;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "module_permissions", joinColumns = @JoinColumn(name = "module_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id"))
-	private Set<PermissionEntity> permissions;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "module_id", referencedColumnName = "id")
+	private Set<RoleModulePermissionsEntity> modulePermissions;
 
-	@ManyToMany(mappedBy = "modules", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JsonProperty(access = Access.WRITE_ONLY)
-	private Set<RoleEntity> roleEntities;
 }

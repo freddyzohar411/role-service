@@ -1,12 +1,15 @@
 package com.avensys.rts.roleservice.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +20,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "permission", uniqueConstraints = { @UniqueConstraint(columnNames = { "permission_name" }) })
-public class PermissionEntity extends BaseEntity {
+@Table(name = "module_permissions")
+public class RoleModulePermissionsEntity extends BaseEntity {
 
 	private static final long serialVersionUID = 281577856522059273L;
 
@@ -27,10 +30,15 @@ public class PermissionEntity extends BaseEntity {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "permission_name")
-	private String permissionName;
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "module_id", nullable = false)
+	private ModuleEntity module;
 
-	@Column(name = "permission_description")
-	private String permissionDescription;
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "role_id", nullable = false)
+	private RoleEntity role;
+
+	@Column(name = "permissions")
+	private String permissions;
 
 }

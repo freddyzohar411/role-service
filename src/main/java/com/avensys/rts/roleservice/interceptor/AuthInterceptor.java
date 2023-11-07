@@ -18,8 +18,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * @author Rahul Sahu
- * @see This class is used to handle JWT Auth token validation.
+ * @author Kotaiah nalleboina This class is used to handle JWT Auth token
+ *         validation.
  */
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
@@ -40,7 +40,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
 		// Check if the request URL is in the list of URLs that are allowed without
 		// token
-		List<String> allowedUrls = Arrays.asList("/api/user/signin", "/api/user/signup", "/api/user/logout",
+		List<String> allowedUrls = Arrays.asList("/api/role", "/api/user/signup", "/api/user/logout",
 				"/api/user/validate");
 
 		if (allowedUrls.contains(requestUri)) {
