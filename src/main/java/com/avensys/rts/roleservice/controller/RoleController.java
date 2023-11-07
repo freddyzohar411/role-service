@@ -140,7 +140,7 @@ public class RoleController {
 	public ResponseEntity<?> searchRole(@RequestParam("search") String search, Pageable pageable) {
 		Page<RoleEntity> page = roleService.search(search, pageable);
 		return ResponseUtil.generateSuccessResponse(page, HttpStatus.OK,
-				messageSource.getMessage(MessageConstants.MESSAGE_DELETED, null, LocaleContextHolder.getLocale()));
+				messageSource.getMessage(MessageConstants.MESSAGE_FETCHED, null, LocaleContextHolder.getLocale()));
 	}
 
 	@PostMapping("listing")
