@@ -3,6 +3,8 @@ package com.avensys.rts.roleservice.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.avensys.rts.roleservice.payload.response.RoleListingResponseDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -65,6 +67,14 @@ public class ResponseUtil {
 			});
 		}
 		return response;
+	}
+
+	public static RoleListingResponseDTO mapRoleEntityPageToRoleListingResponse(Page<RoleEntity> roleEntityPage) {
+		RoleListingResponseDTO roleListingResponseDTO = new RoleListingResponseDTO();
+		roleListingResponseDTO.setTotalElements(roleEntityPage.getTotalElements());
+		roleListingResponseDTO.setTotalPages(roleEntityPage.getTotalPages());
+		roleListingResponseDTO.setRoles(mapRoleEntityListtoResponse(roleEntityPage.getContent()));
+		return roleListingResponseDTO;
 	}
 
 }

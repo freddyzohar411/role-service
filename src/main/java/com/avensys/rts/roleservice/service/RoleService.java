@@ -1,12 +1,11 @@
 package com.avensys.rts.roleservice.service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.avensys.rts.roleservice.entity.ModuleEntity;
@@ -92,15 +92,16 @@ public class RoleService {
 	public void updateRole(RoleRequestDTO roleRequestDTO) throws ServiceException {
 		RoleEntity roleEntity = getRoleById(roleRequestDTO.getId());
 
-//		RoleEntity roleEntity = mapRequestToEntity(roleRequestDTO);
-//		List<Long> permissionDTOList = roleRequestDTO.getPermissionDTOList();
-//		permissionDTOList.forEach(id -> {
-//			Optional<PermissionEntity> permissionEntity = permissionRepository.findById(id);
-//			if (permissionEntity.isPresent()) {
-//				roleEntity.getPermissions().add(permissionEntity.get());
-//			}
-//		});
-//		roleRepository.save(roleEntity);
+		// RoleEntity roleEntity = mapRequestToEntity(roleRequestDTO);
+		// List<Long> permissionDTOList = roleRequestDTO.getPermissionDTOList();
+		// permissionDTOList.forEach(id -> {
+		// Optional<PermissionEntity> permissionEntity =
+		// permissionRepository.findById(id);
+		// if (permissionEntity.isPresent()) {
+		// roleEntity.getPermissions().add(permissionEntity.get());
+		// }
+		// });
+		// roleRepository.save(roleEntity);
 	}
 
 	public void deleteRole(Long id) throws ServiceException {
@@ -140,6 +141,77 @@ public class RoleService {
 		}
 
 		return roleRepository.findAll(builder.build(), pageable);
+	}
+
+	public Page<RoleEntity> getUserGroupListingPage(Integer page, Integer size, String sortBy, String sortDirection) {
+		Sort sort = null;
+		if (sortBy != null) {
+			// Get direction based on sort direction
+			Sort.Direction direction = Sort.DEFAULT_DIRECTION;
+			if (sortDirection != null) {
+				direction = sortDirection.equals("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+			}
+			sort = Sort.by(direction, sortBy);
+		} else {
+			sort = Sort.by(Sort.Direction.DESC, "updatedAt");
+		}
+		Pageable pageable = null;
+		if (page == null && size == null) {
+			pageable = PageRequest.of(0, Integer.MAX_VALUE, sort);
+		} else {
+			pageable = PageRequest.of(page, size, sort);
+		}
+		Page<RoleEntity> rolesPage = roleRepository.findAllByPaginationAndSort(false, true, pageable);
+		return rolesPage;
+	}
+
+	public Page<RoleEntity> getUserGroupListingPageWithSearch(Integer page, Integer size, String sortBy,
+			String sortDirection, String searchTerm) {
+		Sort sort = null;
+		if (sortBy != null) {
+			// Get direction based on sort direction
+			Sort.Direction direction = Sort.DEFAULT_DIRECTION;
+			if (sortDirection != null) {
+				direction = sortDirection.equals("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+			}
+			sort = Sort.by(direction, sortBy);
+		} else {
+			sort = Sort.by(Sort.Direction.DESC, "updatedAt");
+		}
+
+		Pageable pageable = null;
+		if (page == null && size == null) {
+			pageable = PageRequest.of(0, Integer.MAX_VALUE, sort);
+		} else {
+			pageable = PageRequest.of(page, size, sort);
+		}
+		// Dynamic search based on custom view (future feature)
+		List<String> customView = List.of("roleName", "roleDescription");
+		Page<RoleEntity> rolesPage = roleRepository.findAll(getSpecification(searchTerm, customView), pageable);
+		return rolesPage;
+	}
+
+	private Specification<RoleEntity> getSpecification(String searchTerm, List<String> customView) {
+		return (root, query, criteriaBuilder) -> {
+			List<Predicate> predicates = new ArrayList<>();
+			// Custom fields you want to search in
+			for (String field : customView) {
+				Path<Object> fieldPath = root.get(field);
+				if (fieldPath.getJavaType() == Integer.class) {
+					try {
+						Integer id = Integer.parseInt(searchTerm);
+						predicates.add(criteriaBuilder.equal(fieldPath, id));
+					} catch (NumberFormatException e) {
+						// Ignore if it's not a valid integer
+					}
+				} else {
+					predicates.add(criteriaBuilder.like(criteriaBuilder.lower(fieldPath.as(String.class)),
+							"%" + searchTerm.toLowerCase() + "%"));
+				}
+			}
+			Predicate searchOrPredicates = criteriaBuilder.or(predicates.toArray(new Predicate[0]));
+			return criteriaBuilder.and(searchOrPredicates);
+		};
 	}
 
 }
