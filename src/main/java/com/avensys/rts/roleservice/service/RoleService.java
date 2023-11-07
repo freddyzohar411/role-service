@@ -63,7 +63,7 @@ public class RoleService {
 	}
 
 	public void createRole(RoleRequestDTO roleRequestDTO) throws ServiceException {
-		LOG.info("createRole started");
+		LOG.info("createRole started ");
 
 		// add check for role name exists in a DB
 		if (roleRepository.existsByRoleName(roleRequestDTO.getRoleName())) {
@@ -103,22 +103,32 @@ public class RoleService {
 					messageSource.getMessage("error.rolenametaken", null, LocaleContextHolder.getLocale()));
 		}
 
-		RoleEntity roleEntity = mapRequestToEntity(roleRequestDTO);
+		RoleEntity roleEntity = getRoleById(roleRequestDTO.getId());
 
 		List<ModuleRequestDTO> moduleRequestDTOs = roleRequestDTO.getModules();
 
-		Set<RoleModulePermissionsEntity> roleModulePermissions = new HashSet<RoleModulePermissionsEntity>();
+		Set<RoleModulePermissionsEntity> roleModulePermissions = roleEntity.getModulePermissions();
 
 		moduleRequestDTOs.forEach(module -> {
 			Optional<ModuleEntity> moduleEntity = moduleRepository.findById(module.getId());
+
 			if (moduleEntity.isPresent() && module.getPermissions() != null && module.getPermissions().size() > 0) {
 				String permissions = StringUtils.join(module.getPermissions(), ',');
 
-				RoleModulePermissionsEntity roleModulePermissionsEntity = new RoleModulePermissionsEntity();
-				roleModulePermissionsEntity.setRole(roleEntity);
-				roleModulePermissionsEntity.setModule(moduleEntity.get());
-				roleModulePermissionsEntity.setPermissions(permissions);
-				roleModulePermissions.add(roleModulePermissionsEntity);
+				RoleModulePermissionsEntity roleModulePermissionsEntity = null;
+
+				Optional<RoleModulePermissionsEntity> rpm = roleModulePermissions.stream()
+						.filter(data -> data.getModule().getId() == module.getId()).findFirst();
+				if (rpm.isPresent()) {
+					roleModulePermissionsEntity = rpm.get();
+					roleModulePermissionsEntity.setPermissions(permissions);
+				} else {
+					roleModulePermissionsEntity = new RoleModulePermissionsEntity();
+					roleModulePermissionsEntity.setRole(roleEntity);
+					roleModulePermissionsEntity.setModule(moduleEntity.get());
+					roleModulePermissionsEntity.setPermissions(permissions);
+					roleModulePermissions.add(roleModulePermissionsEntity);
+				}
 			}
 		});
 		roleEntity.setModulePermissions(roleModulePermissions);
