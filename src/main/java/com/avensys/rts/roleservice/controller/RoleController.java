@@ -2,7 +2,6 @@ package com.avensys.rts.roleservice.controller;
 
 import java.util.List;
 
-import com.avensys.rts.roleservice.payload.request.RoleListingRequestDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.avensys.rts.roleservice.constants.MessageConstants;
 import com.avensys.rts.roleservice.entity.RoleEntity;
 import com.avensys.rts.roleservice.exception.ServiceException;
+import com.avensys.rts.roleservice.payload.request.RoleListingRequestDTO;
 import com.avensys.rts.roleservice.payload.request.RoleRequestDTO;
 import com.avensys.rts.roleservice.service.RoleService;
+import com.avensys.rts.roleservice.util.JwtUtil;
 import com.avensys.rts.roleservice.util.ResponseUtil;
 
 @CrossOrigin
@@ -51,7 +52,7 @@ public class RoleController {
 	 */
 	@PostMapping
 	public ResponseEntity<?> createRole(@RequestBody RoleRequestDTO roleRequestDTO) {
-		LOG.info("create role request received");
+		LOG.info("create role request received " + JwtUtil.getTokenFromContext());
 		try {
 			roleService.createRole(roleRequestDTO);
 			return ResponseUtil.generateSuccessResponse(null, HttpStatus.CREATED,
@@ -138,7 +139,7 @@ public class RoleController {
 	public ResponseEntity<?> searchRole(@RequestParam("search") String search, Pageable pageable) {
 		Page<RoleEntity> page = roleService.search(search, pageable);
 		return ResponseUtil.generateSuccessResponse(page, HttpStatus.OK,
-				messageSource.getMessage(MessageConstants.MESSAGE_DELETED, null, LocaleContextHolder.getLocale()));
+				messageSource.getMessage(MessageConstants.MESSAGE_FETCHED, null, LocaleContextHolder.getLocale()));
 	}
 
 	@PostMapping("listing")
