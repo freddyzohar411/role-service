@@ -17,23 +17,24 @@ public class AdminData implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		PermissionEntity save = new PermissionEntity();
-		save.setPermissionName("Write");
-		save.setPermissionDescription("Write");
-		save.setCreatedBy(1l);
-		save.setUpdatedBy(1l);
+
+		PermissionEntity read = new PermissionEntity();
+		read.setPermissionName("Read");
+		read.setPermissionDescription("Read");
+		read.setCreatedBy(1l);
+		read.setUpdatedBy(1l);
+
+		PermissionEntity write = new PermissionEntity();
+		write.setPermissionName("Write");
+		write.setPermissionDescription("Write");
+		write.setCreatedBy(1l);
+		write.setUpdatedBy(1l);
 
 		PermissionEntity edit = new PermissionEntity();
 		edit.setPermissionName("Edit");
 		edit.setPermissionDescription("Edit");
 		edit.setCreatedBy(1l);
 		edit.setUpdatedBy(1l);
-
-		PermissionEntity get = new PermissionEntity();
-		get.setPermissionName("Read");
-		get.setPermissionDescription("Read");
-		get.setCreatedBy(1l);
-		get.setUpdatedBy(1l);
 
 		PermissionEntity delete = new PermissionEntity();
 		delete.setPermissionName("Delete");
@@ -42,9 +43,9 @@ public class AdminData implements ApplicationRunner {
 		delete.setUpdatedBy(1l);
 
 		try {
-			permissionService.save(save);
+			permissionService.save(read);
+			permissionService.save(write);
 			permissionService.save(edit);
-			permissionService.save(get);
 			permissionService.save(delete);
 		} catch (ServiceException e) {
 

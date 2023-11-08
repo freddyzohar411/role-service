@@ -108,6 +108,10 @@ public class RoleService {
 		}
 
 		RoleEntity roleEntity = getRoleById(roleRequestDTO.getId());
+		roleEntity.setIsActive(true);
+		roleEntity.setIsDeleted(false);
+		roleEntity.setRoleName(roleRequestDTO.getRoleName());
+		roleEntity.setRoleDescription(roleRequestDTO.getRoleDescription());
 
 		List<ModuleRequestDTO> moduleRequestDTOs = roleRequestDTO.getModules();
 
