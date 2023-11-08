@@ -21,26 +21,26 @@ public class AdminData implements ApplicationRunner {
 		PermissionEntity read = new PermissionEntity();
 		read.setPermissionName("Read");
 		read.setPermissionDescription("Read");
-		read.setCreatedBy(1);
-		read.setUpdatedBy(1);
+		read.setCreatedBy(1l);
+		read.setUpdatedBy(1l);
 
 		PermissionEntity write = new PermissionEntity();
 		write.setPermissionName("Write");
 		write.setPermissionDescription("Write");
-		write.setCreatedBy(1);
-		write.setUpdatedBy(1);
+		write.setCreatedBy(1l);
+		write.setUpdatedBy(1l);
 
 		PermissionEntity edit = new PermissionEntity();
 		edit.setPermissionName("Edit");
 		edit.setPermissionDescription("Edit");
-		edit.setCreatedBy(1);
-		edit.setUpdatedBy(1);
+		edit.setCreatedBy(1l);
+		edit.setUpdatedBy(1l);
 
 		PermissionEntity delete = new PermissionEntity();
 		delete.setPermissionName("Delete");
 		delete.setPermissionDescription("Delete");
-		delete.setCreatedBy(1);
-		delete.setUpdatedBy(1);
+		delete.setCreatedBy(1l);
+		delete.setUpdatedBy(1l);
 
 		try {
 			permissionService.save(read);

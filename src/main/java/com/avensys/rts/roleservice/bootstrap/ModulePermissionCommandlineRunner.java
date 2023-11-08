@@ -23,7 +23,7 @@ public class ModulePermissionCommandlineRunner implements CommandLineRunner {
 
 	private List<String> permissionList = List.of("Read", "Write", "Edit", "Delete");
 
-	private List<String> moduleList = List.of("Account", "Job", "Candidate", "Setting");
+	private List<String> moduleList = List.of("Accounts", "Jobs", "Candidates", "Settings");
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -45,8 +45,8 @@ public class ModulePermissionCommandlineRunner implements CommandLineRunner {
 				ModuleEntity moduleEntity = new ModuleEntity();
 				moduleEntity.setModuleName(module);
 				moduleEntity.setModuleDescription(("Provide a platform for creating, searching and managing %s listings.").formatted(module.toLowerCase()));
-				moduleEntity.setCreatedBy(1);
-				moduleEntity.setUpdatedBy(1);
+				moduleEntity.setCreatedBy(1l);
+				moduleEntity.setUpdatedBy(1l);
 				moduleEntity.setIsActive(true);
 				moduleRepository.save(moduleEntity);
 			}

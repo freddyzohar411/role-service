@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.avensys.rts.roleservice.entity.PermissionEntity;
 import com.avensys.rts.roleservice.exception.ServiceException;
 import com.avensys.rts.roleservice.service.PermissionService;
+import com.avensys.rts.roleservice.util.JwtUtil;
 import com.avensys.rts.roleservice.util.ResponseUtil;
 
 @CrossOrigin
@@ -38,6 +39,9 @@ public class PermissionController {
 	@Autowired
 	private MessageSource messageSource;
 
+	@Autowired
+	private JwtUtil jwtUtil;
+
 	/**
 	 * This method is used to create a permission.
 	 * 
@@ -48,8 +52,10 @@ public class PermissionController {
 	public ResponseEntity<?> create(@RequestBody PermissionEntity permissionEntity,
 			@RequestHeader(name = "Authorization") String token) {
 		LOG.info("create permission request received");
-		System.out.println("test token " + token);
 		try {
+			Long userId = jwtUtil.getUserId(token);
+			permissionEntity.setCreatedBy(userId);
+			permissionEntity.setUpdatedBy(userId);
 			permissionService.save(permissionEntity);
 			return ResponseUtil.generateSuccessResponse(null, HttpStatus.CREATED,
 					messageSource.getMessage("permission.created", null, LocaleContextHolder.getLocale()));
@@ -65,9 +71,12 @@ public class PermissionController {
 	 * @return
 	 */
 	@PutMapping
-	public ResponseEntity<?> update(@RequestBody PermissionEntity permissionEntity) {
+	public ResponseEntity<?> update(@RequestBody PermissionEntity permissionEntity,
+			@RequestHeader(name = "Authorization") String token) {
 		LOG.info("update permission request received");
 		try {
+			Long userId = jwtUtil.getUserId(token);
+			permissionEntity.setUpdatedBy(userId);
 			permissionService.update(permissionEntity);
 			return ResponseUtil.generateSuccessResponse(null, HttpStatus.OK,
 					messageSource.getMessage("permission.updated", null, LocaleContextHolder.getLocale()));
