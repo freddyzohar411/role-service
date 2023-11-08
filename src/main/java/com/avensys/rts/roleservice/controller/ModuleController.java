@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.avensys.rts.roleservice.entity.ModuleEntity;
 import com.avensys.rts.roleservice.exception.ServiceException;
 import com.avensys.rts.roleservice.service.ModuleService;
+import com.avensys.rts.roleservice.util.JwtUtil;
 import com.avensys.rts.roleservice.util.ResponseUtil;
 
 @CrossOrigin
@@ -37,6 +39,9 @@ public class ModuleController {
 	@Autowired
 	private MessageSource messageSource;
 
+	@Autowired
+	private JwtUtil jwtUtil;
+
 	/**
 	 * This method is used to create a module.
 	 * 
@@ -44,9 +49,13 @@ public class ModuleController {
 	 * @return
 	 */
 	@PostMapping
-	public ResponseEntity<?> create(@RequestBody ModuleEntity moduleEntity) {
+	public ResponseEntity<?> create(@RequestBody ModuleEntity moduleEntity,
+			@RequestHeader(name = "Authorization") String token) {
 		LOG.info("create module request received");
 		try {
+			Long userId = jwtUtil.getUserId(token);
+			moduleEntity.setCreatedBy(userId);
+			moduleEntity.setUpdatedBy(userId);
 			moduleService.save(moduleEntity);
 			return ResponseUtil.generateSuccessResponse(null, HttpStatus.CREATED,
 					messageSource.getMessage("module.created", null, LocaleContextHolder.getLocale()));
@@ -62,9 +71,12 @@ public class ModuleController {
 	 * @return
 	 */
 	@PutMapping
-	public ResponseEntity<?> update(@RequestBody ModuleEntity moduleEntity) {
+	public ResponseEntity<?> update(@RequestBody ModuleEntity moduleEntity,
+			@RequestHeader(name = "Authorization") String token) {
 		LOG.info("update module request received");
 		try {
+			Long userId = jwtUtil.getUserId(token);
+			moduleEntity.setUpdatedBy(userId);
 			moduleService.update(moduleEntity);
 			return ResponseUtil.generateSuccessResponse(null, HttpStatus.OK,
 					messageSource.getMessage("module.updated", null, LocaleContextHolder.getLocale()));

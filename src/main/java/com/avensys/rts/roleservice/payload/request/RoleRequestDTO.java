@@ -17,4 +17,6 @@ public class RoleRequestDTO {
 	private String roleName;
 	private String roleDescription;
 	private List<ModuleRequestDTO> modules;
+	private Long createdBy;
+	private Long updatedBy;
 }

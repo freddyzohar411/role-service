@@ -86,10 +86,14 @@ public class RoleService {
 				roleModulePermissionsEntity.setRole(roleEntity);
 				roleModulePermissionsEntity.setModule(moduleEntity.get());
 				roleModulePermissionsEntity.setPermissions(permissions);
+				roleModulePermissionsEntity.setCreatedBy(roleRequestDTO.getCreatedBy());
+				roleModulePermissionsEntity.setUpdatedBy(roleRequestDTO.getUpdatedBy());
 				roleModulePermissions.add(roleModulePermissionsEntity);
 			}
 		});
 		roleEntity.setModulePermissions(roleModulePermissions);
+		roleEntity.setCreatedBy(roleRequestDTO.getCreatedBy());
+		roleEntity.setUpdatedBy(roleRequestDTO.getUpdatedBy());
 		roleRepository.save(roleEntity);
 	}
 
@@ -122,16 +126,20 @@ public class RoleService {
 				if (rpm.isPresent()) {
 					roleModulePermissionsEntity = rpm.get();
 					roleModulePermissionsEntity.setPermissions(permissions);
+					roleModulePermissionsEntity.setUpdatedBy(roleRequestDTO.getUpdatedBy());
 				} else {
 					roleModulePermissionsEntity = new RoleModulePermissionsEntity();
 					roleModulePermissionsEntity.setRole(roleEntity);
 					roleModulePermissionsEntity.setModule(moduleEntity.get());
 					roleModulePermissionsEntity.setPermissions(permissions);
+					roleModulePermissionsEntity.setCreatedBy(roleRequestDTO.getCreatedBy());
+					roleModulePermissionsEntity.setUpdatedBy(roleRequestDTO.getUpdatedBy());
 					roleModulePermissions.add(roleModulePermissionsEntity);
 				}
 			}
 		});
 		roleEntity.setModulePermissions(roleModulePermissions);
+		roleEntity.setUpdatedBy(roleRequestDTO.getUpdatedBy());
 		roleRepository.save(roleEntity);
 	}
 

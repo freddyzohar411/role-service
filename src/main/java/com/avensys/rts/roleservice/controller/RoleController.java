@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +45,9 @@ public class RoleController {
 	@Autowired
 	private MessageSource messageSource;
 
+	@Autowired
+	private JwtUtil jwtUtil;
+
 	/**
 	 * This method is used to create a role.
 	 * 
@@ -51,9 +55,13 @@ public class RoleController {
 	 * @return
 	 */
 	@PostMapping
-	public ResponseEntity<?> createRole(@RequestBody RoleRequestDTO roleRequestDTO) {
-		LOG.info("create role request received " + JwtUtil.getTokenFromContext());
+	public ResponseEntity<?> createRole(@RequestBody RoleRequestDTO roleRequestDTO,
+			@RequestHeader(name = "Authorization") String token) {
+		LOG.info("create role request received ");
 		try {
+			Long userId = jwtUtil.getUserId(token);
+			roleRequestDTO.setCreatedBy(userId);
+			roleRequestDTO.setUpdatedBy(userId);
 			roleService.createRole(roleRequestDTO);
 			return ResponseUtil.generateSuccessResponse(null, HttpStatus.CREATED,
 					messageSource.getMessage(MessageConstants.MESSAGE_CREATED, null, LocaleContextHolder.getLocale()));
@@ -70,9 +78,12 @@ public class RoleController {
 	 * @return
 	 */
 	@PutMapping
-	public ResponseEntity<?> updateRole(@RequestBody RoleRequestDTO roleRequestDTO) {
+	public ResponseEntity<?> updateRole(@RequestBody RoleRequestDTO roleRequestDTO,
+			@RequestHeader(name = "Authorization") String token) {
 		LOG.info("update role request received");
 		try {
+			Long userId = jwtUtil.getUserId(token);
+			roleRequestDTO.setUpdatedBy(userId);
 			roleService.updateRole(roleRequestDTO);
 			return ResponseUtil.generateSuccessResponse(null, HttpStatus.OK,
 					messageSource.getMessage(MessageConstants.MESSAGE_UPDATED, null, LocaleContextHolder.getLocale()));
