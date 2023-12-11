@@ -116,7 +116,6 @@ public class RoleService {
 		List<ModuleRequestDTO> moduleRequestDTOs = roleRequestDTO.getModules();
 
 		Set<RoleModulePermissionsEntity> roleModulePermissions = roleEntity.getModulePermissions();
-
 		moduleRequestDTOs.forEach(module -> {
 			Optional<ModuleEntity> moduleEntity = moduleRepository.findById(module.getId());
 
