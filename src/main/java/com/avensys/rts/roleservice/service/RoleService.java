@@ -140,6 +140,19 @@ public class RoleService {
 					roleModulePermissions.add(roleModulePermissionsEntity);
 				}
 			}
+
+			// Added by Hx - Remove all module permission is length is 0. Get error how to remove permission
+			 if (moduleEntity.isPresent() && module.getPermissions() != null && module.getPermissions().size() == 0) {
+			 	RoleModulePermissionsEntity roleModulePermissionsEntity = null;
+			 	Optional<RoleModulePermissionsEntity> rpm = roleModulePermissions.stream()
+			 			.filter(data -> data.getModule().getId() == module.getId()).findFirst();
+			 	if (rpm.isPresent()) {
+			 		roleModulePermissionsEntity = rpm.get();
+			 		roleModulePermissionsEntity.setPermissions("");
+			 		roleModulePermissionsEntity.setUpdatedBy(roleRequestDTO.getUpdatedBy());
+			 	}
+			 }
+
 		});
 		roleEntity.setModulePermissions(roleModulePermissions);
 		roleEntity.setUpdatedBy(roleRequestDTO.getUpdatedBy());
