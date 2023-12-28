@@ -28,17 +28,6 @@ public class ModulePermissionCommandlineRunner implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
-//		permissionList.forEach(permission -> {
-//			if (!permissionRepository.existsByPermissionName(permission)) {
-//				PermissionEntity permissionEntity = new PermissionEntity();
-//				permissionEntity.setPermissionName(permission);
-//				permissionEntity.setPermissionDescription(permission);
-//				permissionEntity.setCreatedBy(1);
-//				permissionEntity.setUpdatedBy(1);
-//				permissionEntity.setIsActive(true);
-//				permissionRepository.save(permissionEntity);
-//			}
-//		});
 
 		moduleList.forEach(module -> {
 			if (!moduleRepository.existsByModuleName(module)) {
