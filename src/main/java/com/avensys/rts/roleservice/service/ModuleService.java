@@ -69,8 +69,6 @@ public class ModuleService {
 	}
 
 	public List<ModuleEntity> fetchList() {
-
-//		return (List<ModuleEntity>) moduleRepository.findAll();
 		return moduleRepository.findAll();
 	}
 
