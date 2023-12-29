@@ -50,6 +50,12 @@ public class RoleService {
 	@Autowired
 	private MessageSource messageSource;
 
+	public RoleService(RoleRepository roleRepository, MessageSource messageSource, ModuleRepository moduleRepository) {
+		this.roleRepository = roleRepository;
+		this.messageSource = messageSource;
+		this.moduleRepository = moduleRepository;
+	}
+
 	private RoleEntity mapRequestToEntity(RoleRequestDTO roleRequestDTO) {
 		RoleEntity entity = new RoleEntity();
 		if (roleRequestDTO.getId() != null) {
