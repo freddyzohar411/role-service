@@ -154,7 +154,7 @@ public class RoleController {
 				messageSource.getMessage(MessageConstants.MESSAGE_FETCHED, null, LocaleContextHolder.getLocale()));
 	}
 
-	@PostMapping("listing")
+	@PostMapping("/listing")
 	public ResponseEntity<Object> getRolesListing(@RequestBody RoleListingRequestDTO roleListingRequestDTO) {
 		Integer page = roleListingRequestDTO.getPage();
 		Integer pageSize = roleListingRequestDTO.getPageSize();
