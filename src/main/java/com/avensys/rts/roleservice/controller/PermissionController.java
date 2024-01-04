@@ -70,7 +70,7 @@ public class PermissionController {
 	 * @param permissionEntity
 	 * @return
 	 */
-	@PutMapping("/")
+	@PutMapping("/edit")
 	public ResponseEntity<?> update(@RequestBody PermissionEntity permissionEntity,
 			@RequestHeader(name = "Authorization") String token) {
 		LOG.info("update permission request received");

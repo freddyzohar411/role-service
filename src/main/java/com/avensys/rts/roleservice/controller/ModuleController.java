@@ -70,7 +70,7 @@ public class ModuleController {
 	 * @param moduleEntity
 	 * @return
 	 */
-	@PutMapping("/")
+	@PutMapping("/edit")
 	public ResponseEntity<?> update(@RequestBody ModuleEntity moduleEntity,
 			@RequestHeader(name = "Authorization") String token) {
 		LOG.info("update module request received");
