@@ -55,7 +55,7 @@ public class RoleController {
 	 * @param roleRequestDTO
 	 * @return
 	 */
-	@PostMapping
+	@PostMapping("/add")
 	public ResponseEntity<?> createRole(@RequestBody RoleRequestDTO roleRequestDTO,
 			@RequestHeader(name = "Authorization") String token) {
 		LOG.info("create role request received ");
@@ -78,7 +78,7 @@ public class RoleController {
 	 * @param roleId
 	 * @return
 	 */
-	@PutMapping
+	@PutMapping("/")
 	public ResponseEntity<?> updateRole(@RequestBody RoleRequestDTO roleRequestDTO,
 			@RequestHeader(name = "Authorization") String token) {
 		LOG.info("update role request received");
@@ -136,7 +136,7 @@ public class RoleController {
 	 * @param sortBy
 	 * @return
 	 */
-	@GetMapping
+	@GetMapping("/")
 	public ResponseEntity<Object> getRoleList(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer pageSize,
 			@RequestParam(defaultValue = "roleName") String sortBy) {
