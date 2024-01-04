@@ -106,7 +106,7 @@ public class ModuleController {
 		}
 	}
 
-	@GetMapping("/")
+	@GetMapping
 	public ResponseEntity<?> findAll() {
 		List<ModuleEntity> permissions = moduleService.fetchList();
 		return ResponseUtil.generateSuccessResponse(permissions, HttpStatus.OK, null);

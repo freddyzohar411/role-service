@@ -106,7 +106,7 @@ public class PermissionController {
 		}
 	}
 
-	@GetMapping("/")
+	@GetMapping
 	public ResponseEntity<?> findAll() {
 		List<PermissionEntity> permissions = permissionService.fetchList();
 		return ResponseUtil.generateSuccessResponse(permissions, HttpStatus.OK, null);
