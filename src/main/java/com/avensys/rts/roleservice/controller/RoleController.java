@@ -78,7 +78,7 @@ public class RoleController {
 	 * @param roleId
 	 * @return
 	 */
-	@PutMapping("/")
+	@PutMapping("/edit")
 	public ResponseEntity<?> updateRole(@RequestBody RoleRequestDTO roleRequestDTO,
 			@RequestHeader(name = "Authorization") String token) {
 		LOG.info("update role request received");
