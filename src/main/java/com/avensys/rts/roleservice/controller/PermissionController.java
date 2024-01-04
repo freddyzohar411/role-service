@@ -48,7 +48,7 @@ public class PermissionController {
 	 * @param permissionEntity
 	 * @return
 	 */
-	@PostMapping
+	@PostMapping("/add")
 	public ResponseEntity<?> create(@RequestBody PermissionEntity permissionEntity,
 			@RequestHeader(name = "Authorization") String token) {
 		LOG.info("create permission request received");
@@ -70,7 +70,7 @@ public class PermissionController {
 	 * @param permissionEntity
 	 * @return
 	 */
-	@PutMapping
+	@PutMapping("/")
 	public ResponseEntity<?> update(@RequestBody PermissionEntity permissionEntity,
 			@RequestHeader(name = "Authorization") String token) {
 		LOG.info("update permission request received");
@@ -106,7 +106,7 @@ public class PermissionController {
 		}
 	}
 
-	@GetMapping()
+	@GetMapping("/")
 	public ResponseEntity<?> findAll() {
 		List<PermissionEntity> permissions = permissionService.fetchList();
 		return ResponseUtil.generateSuccessResponse(permissions, HttpStatus.OK, null);

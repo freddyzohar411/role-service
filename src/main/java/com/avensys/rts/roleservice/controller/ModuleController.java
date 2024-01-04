@@ -48,7 +48,7 @@ public class ModuleController {
 	 * @param moduleEntity
 	 * @return
 	 */
-	@PostMapping
+	@PostMapping("/add")
 	public ResponseEntity<?> create(@RequestBody ModuleEntity moduleEntity,
 			@RequestHeader(name = "Authorization") String token) {
 		LOG.info("create module request received");
@@ -70,7 +70,7 @@ public class ModuleController {
 	 * @param moduleEntity
 	 * @return
 	 */
-	@PutMapping
+	@PutMapping("/")
 	public ResponseEntity<?> update(@RequestBody ModuleEntity moduleEntity,
 			@RequestHeader(name = "Authorization") String token) {
 		LOG.info("update module request received");
@@ -106,7 +106,7 @@ public class ModuleController {
 		}
 	}
 
-	@GetMapping()
+	@GetMapping("/")
 	public ResponseEntity<?> findAll() {
 		List<ModuleEntity> permissions = moduleService.fetchList();
 		return ResponseUtil.generateSuccessResponse(permissions, HttpStatus.OK, null);
