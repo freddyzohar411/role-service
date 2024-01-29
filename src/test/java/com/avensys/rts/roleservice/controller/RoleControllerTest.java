@@ -1,7 +1,7 @@
 package com.avensys.rts.roleservice.controller;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -43,9 +43,6 @@ import com.avensys.rts.roleservice.util.ResponseUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import ch.qos.logback.core.status.Status;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RoleControllerTest {
@@ -84,7 +81,7 @@ public class RoleControllerTest {
 	List<ModuleRequestDTO> modules;
 	List<ModuleResponseDTO> modules1;
 	List<Long> permissionsList;
-	List<String>permissionsList1;
+	List<String> permissionsList1;
 	Set<RoleModulePermissionsEntity> modulePermissions;
 	RoleModulePermissionsEntity roleModulePermissionsEntity;
 	RoleModulePermissionsEntity roleModulePermissionsEntity1;
@@ -111,21 +108,21 @@ public class RoleControllerTest {
 				groupEntities);
 		roleEntity1 = new RoleEntity(2L, "Super Admin", "Super admin access to all modules!", modulePermissions,
 				groupEntities);
-		roleEntityList = Arrays.asList(roleEntity,roleEntity1);
+		roleEntityList = Arrays.asList(roleEntity, roleEntity1);
 		permissionsList = Arrays.asList(1L, 2L, 3L, 4L);
-		permissionsList1 = Arrays.asList("Read", "Write","Edit","Delete");
+		permissionsList1 = Arrays.asList("Read", "Write", "Edit", "Delete");
 		moduleRequestDTO = new ModuleRequestDTO(1L, permissionsList);
 		moduleRequestDTO1 = new ModuleRequestDTO(2L, permissionsList);
-		moduleResponseDTO = new ModuleResponseDTO(1L,"Hi",permissionsList1);
-		moduleResponseDTO1 = new ModuleResponseDTO(1L,"Hi1",permissionsList1);
+		moduleResponseDTO = new ModuleResponseDTO(1L, "Hi", permissionsList1);
+		moduleResponseDTO1 = new ModuleResponseDTO(1L, "Hi1", permissionsList1);
 		modules1 = Arrays.asList(moduleResponseDTO, moduleResponseDTO1);
 		modules = Arrays.asList(moduleRequestDTO, moduleRequestDTO1);
 		roleRequestDTO = new RoleRequestDTO(1L, "Super Admin", "Super admin access to all modules!", modules, 1L, 1L);
 		roleResponseDTO = new RoleResponseDTO(1L, "Super Admin", "Super admin access to all modules!", modules1);
 		roleResponseDTO1 = new RoleResponseDTO(2L, "Super Admin", "Super admin access to all modules!", modules1);
-		response = Arrays.asList(roleResponseDTO,roleResponseDTO1);
+		response = Arrays.asList(roleResponseDTO, roleResponseDTO1);
 		this.mockMvc = MockMvcBuilders.standaloneSetup(roleController).build();
-		
+
 	}
 
 	@AfterEach
@@ -167,8 +164,6 @@ public class RoleControllerTest {
 		mockMvc.perform(request).andExpect(status().isOk()).andReturn();
 	}
 
-
-	
 	/*
 	 * @Test void testFind() throws Exception {
 	 * //when(roleService.getRoleById(1L)).thenReturn(roleEntity);
@@ -184,7 +179,6 @@ public class RoleControllerTest {
 	 * 
 	 * }
 	 */
-	 
 
 	public static String asJsonString(final Object obj) {
 		try {
@@ -194,14 +188,14 @@ public class RoleControllerTest {
 		}
 
 	}
-	
+
 	@Test
 	void testGetRoleList()  throws Exception{
 		when(roleService.getRoleList(0,10,"Super Admin")).thenReturn(roleEntityList);
 		RequestBuilder request = MockMvcRequestBuilders.get("/api/role");
 		mockMvc.perform(request).andReturn();
 	}
-	
+
 	@Test
 	void testDeleteRole() throws Exception {
 		roleService.deleteRole(1L);
