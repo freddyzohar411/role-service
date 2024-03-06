@@ -1,7 +1,10 @@
 package com.avensys.rts.roleservice.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.avensys.rts.roleservice.entity.UserGroupEntity;
+import com.avensys.rts.roleservice.payload.response.RoleResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,8 @@ import com.avensys.rts.roleservice.payload.request.RoleRequestDTO;
 import com.avensys.rts.roleservice.service.RoleService;
 import com.avensys.rts.roleservice.util.JwtUtil;
 import com.avensys.rts.roleservice.util.ResponseUtil;
+
+import javax.management.relation.Role;
 
 @CrossOrigin
 //@CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -118,11 +123,10 @@ public class RoleController {
 	 * @return
 	 */
 	@GetMapping("/{id}")
-	public ResponseEntity<?> find(@PathVariable("id") Long id) {
+	public ResponseEntity<?> getRoleById(@PathVariable("id") Long id) {
 		try {
 			RoleEntity role = roleService.getRoleById(id);
-			return ResponseUtil.generateSuccessResponse(ResponseUtil.mapRoleEntitytoResponse(role), HttpStatus.OK,
-					null);
+			return ResponseUtil.generateSuccessResponse(ResponseUtil.mapRoleEntitytoResponse(role), HttpStatus.OK, null);
 		} catch (ServiceException e) {
 			return ResponseUtil.generateSuccessResponse(null, HttpStatus.NOT_FOUND, e.getMessage());
 		}

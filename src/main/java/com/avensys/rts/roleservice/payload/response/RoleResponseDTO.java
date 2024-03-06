@@ -1,7 +1,9 @@
 package com.avensys.rts.roleservice.payload.response;
 
 import java.util.List;
+import java.util.Set;
 
+import com.avensys.rts.roleservice.entity.UserGroupEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,4 +19,5 @@ public class RoleResponseDTO {
 	private String roleName;
 	private String roleDescription;
 	private List<ModuleResponseDTO> modules;
+	private Set<UserGroupEntity> userGroups;
 }
