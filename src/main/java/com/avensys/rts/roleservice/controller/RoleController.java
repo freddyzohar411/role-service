@@ -123,7 +123,7 @@ public class RoleController {
 	 * @return
 	 */
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getRoleById(@PathVariable("id") Long id) {
+	public ResponseEntity<?> find(@PathVariable("id") Long id) {
 		try {
 			RoleEntity role = roleService.getRoleById(id);
 			return ResponseUtil.generateSuccessResponse(ResponseUtil.mapRoleEntitytoResponse(role), HttpStatus.OK, null);
