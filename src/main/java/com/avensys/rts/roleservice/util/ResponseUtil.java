@@ -52,6 +52,7 @@ public class ResponseUtil {
 		dto.setId(role.getId());
 		dto.setRoleName(role.getRoleName());
 		dto.setRoleDescription(role.getRoleDescription());
+		dto.setUserGroups(role.getGroupEntities());
 
 		List<ModuleResponseDTO> moduleList = new ArrayList<ModuleResponseDTO>();
 
