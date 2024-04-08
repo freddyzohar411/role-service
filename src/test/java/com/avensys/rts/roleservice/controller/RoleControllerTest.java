@@ -118,8 +118,8 @@ public class RoleControllerTest {
 		modules1 = Arrays.asList(moduleResponseDTO, moduleResponseDTO1);
 		modules = Arrays.asList(moduleRequestDTO, moduleRequestDTO1);
 		roleRequestDTO = new RoleRequestDTO(1L, "Super Admin", "Super admin access to all modules!", modules, 1L, 1L);
-		roleResponseDTO = new RoleResponseDTO(1L, "Super Admin", "Super admin access to all modules!", modules1);
-		roleResponseDTO1 = new RoleResponseDTO(2L, "Super Admin", "Super admin access to all modules!", modules1);
+		roleResponseDTO = new RoleResponseDTO(1L, "Super Admin", "Super admin access to all modules!", modules1,groupEntities);
+		roleResponseDTO1 = new RoleResponseDTO(2L, "Super Admin", "Super admin access to all modules!", modules1,groupEntities);
 		response = Arrays.asList(roleResponseDTO, roleResponseDTO1);
 		this.mockMvc = MockMvcBuilders.standaloneSetup(roleController).build();
 
